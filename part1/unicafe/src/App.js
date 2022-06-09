@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import Statistics from './Statistics.js'
+import Button from './Button.js'
 
 function App() {
 
@@ -31,15 +32,9 @@ function App() {
   <div>
 	  <h1><b>Give feedback</b></h1>
 
-	  <button onClick={incGood}>
-	  Good
-	  </button>	
-	  <button onClick={incNeutral}>
-	  Neutral
-	  </button>
-	  <button onClick={incBad}>
-	  Bad
-	  </button>
+	  <Button name="Good" click={incGood} />
+	  <Button name="Neutral" click={incNeutral} />
+	  <Button name="Bad" click={incBad} />
 
 	  { statsVisibility ? null : <h2>No feedback given</h2> }	 
 	  { statsVisibility ?  <Statistics good={good} bad={bad} neutral={neutral} total={total} /> :null }

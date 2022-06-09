@@ -1,3 +1,4 @@
+import StatisticLine from './StatisticLine.js'
 
 function Statistics({good, bad, neutral, total}) {
 
@@ -13,13 +14,18 @@ return (
 	<div >
 
 	  <h1><b>Statistics</b></h1>
+		<table>
+			<tbody>
+		
+	  		<StatisticLine text="Good" value={good} />
+	  		<StatisticLine text="Neutral" value={neutral} />
+	  		<StatisticLine text="Bad" value={bad} />
 
-	  <p>Good {good}</p>
-	  <p>Neutral {neutral}</p>
-	  <p>Bad {bad}</p>
+	  		<StatisticLine text="Average" value={avg()} />
+	  		<StatisticLine text="Postive" value={pos()} />
 
-	  <p>Average {avg()}</p>
-	  <p>Positive {pos()}</p>
+			</tbody>
+		</table>
 
 	</div>
 </div>
