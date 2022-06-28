@@ -6,17 +6,14 @@ const App = () => {
   ]) 
   const [newName, setNewName] = useState('')
 
-    function handleName(event) {
-
-        console.log(event.target.value)
-        setNewName(event.target.value)
-        setPersons(newName)
+    function handleName(e) {
+        console.log(e)
     }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form>
+      <form >
         <div>
           name: <input
                 value={newName}
@@ -30,11 +27,10 @@ const App = () => {
       </form>
       
       <h2>Numbers</h2>
-        {() => {
-            persons.map((name) => {
-                return <li>{name}</li> 
-            })
-        }}      
+            
+      {persons.map((person, index) => {
+        return <li key={index}> {person.name} </li>
+      })}
 
     </div>
   )
