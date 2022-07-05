@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import Filter from './Filter.js'
+import PersonForm from './PersonForm.js'
+import Persons from './Persons.js'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -30,7 +33,6 @@ const App = () => {
     }
     function handleFilter(e) {
         setShowAll(false)
-        setFilter(e.target.value)
         if (newName === ''){
             setShowAll(true)
         }
@@ -46,7 +48,7 @@ const App = () => {
             id: persons.length + 1,
         }
         if (isNameOnList){
-            alert("Name is already on the list")
+            alert(`${newName} is already on the list`)
         } else {
             setPersons(persons.concat(tempObject))
             setNewName('')
@@ -54,46 +56,16 @@ const App = () => {
         }
 
     }
-    /**
-     *
-     *
-      filter contacts: <input 
-                        value={filter}
-                        onChange={handleFilter}
-                        />
-                */
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Filter filter={filter} handleFilter={handleFilter} />
       <h2> Add a new contact </h2>
-      <form onSubmit={concatContact}>
-        <div>
-          name: <input
-                value={newName}
-                onChange={handleName}
-                /><br/>
-        </div>
-        <div>
-          number: <input
-                value={newNumber}
-                onChange={handleNumber}
-                /><br/>
-        </div>
-           <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      
+      <PersonForm concatContact={concatContact} newName={newName} 
+      handleName={handleName} newNumber={newNumber} handleNumber={handleNumber} />
       <h2>Numbers</h2>
-            
-      {showAll
-      ? persons.map((person, index) => {
-          console.log("showAll value is ", showAll)
-          return <li key={index}> {person.name} {person.number} </li>
-      })
-      : console.log("showAll thing")
-      }
+      <Persons persons={persons} /> 
 
     </div>
   )
