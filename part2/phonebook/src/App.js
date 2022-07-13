@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import axios from 'axios'
+import { useState, useEffect } from 'react'
 import Filter from './Filter.js'
 import PersonForm from './PersonForm.js'
 import Persons from './Persons.js'
@@ -11,6 +12,16 @@ const App = () => {
   const [filter, setFilter] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [showAll, setShowAll] = useState(true)
+  
+  useEffect(() => {
+	  //console.log("useEffect")
+	  axios
+	  	.get('http://localhost:3001/persons')
+	  	.then(response => {
+           // console.log("Response is complete")
+            setPersons(response.data)
+		})
+  }) 
         const isNameOnList = persons.every(m => {
             if(m.name === newName){
                 return true
