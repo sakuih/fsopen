@@ -1,10 +1,12 @@
-import axios from 'axios'
 import { useState, useEffect } from 'react'
 import Filter from './Filter.js'
 import PersonForm from './PersonForm.js'
 import Persons from './Persons.js'
+import {getServerData, deleteData, postData, update} from './backendFunc.js'
 
 const App = () => {
+    // persons value below is for testing. If seen
+    // connection to database has problems
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '123', id: 1 }
   ]) 
@@ -12,16 +14,15 @@ const App = () => {
   const [filter, setFilter] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [nameOnList, setNameOnList] = useState(false)
   
   useEffect(() => {
-	  //console.log("useEffect")
-	  axios
-	  	.get('http://localhost:3001/persons')
-	  	.then(response => {
-           // console.log("Response is complete")
-            setPersons(response.data)
-		})
+      getServerData(setPersons)
   }) 
+    // Checks if persons got duplicate name
+    // isNameOnList can be used as a function with a return value of true or false
+
+    /* Vanha ratkaisu
         const isNameOnList = persons.every(m => {
             if(m.name === newName){
                 return true
@@ -30,6 +31,13 @@ const App = () => {
                 return false
             }
         }) 
+     *
+     */
+    function isNameOnList() {
+        if (persons.some(e => e.name === newName)) {
+           setNameOnList(true) 
+        }
+    }
 
     //Conditional rendering = condition ? true : false}
     // Handling name
@@ -48,20 +56,25 @@ const App = () => {
             setShowAll(true)
         }
     }
+    function deleteContact(index) {
+        deleteData(index)
+        console.log("deleteContact index argument: ", index)
+    }
     
     // Taking name and number into persons array
-    function concatContact(e) {
+    function addContactToList(e) {
         e.preventDefault()
         console.log("form on submit", e.target, "newName value is ", newName)
-        const tempObject = {
+        const newObjectForPhonebook = {
             name: newName,
             number: newNumber,
             id: persons.length + 1,
         }
-        if (isNameOnList){
+        isNameOnList()
+        if (nameOnList){
             alert(`${newName} is already on the list`)
         } else {
-            setPersons(persons.concat(tempObject))
+            postData(newObjectForPhonebook) 
             setNewName('')
             setNewNumber('')
         }
@@ -73,10 +86,10 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter filter={filter} handleFilter={handleFilter} />
       <h2> Add a new contact </h2>
-      <PersonForm concatContact={concatContact} newName={newName} 
+      <PersonForm addContact={addContactToList} newName={newName} 
       handleName={handleName} newNumber={newNumber} handleNumber={handleNumber} />
       <h2>Numbers</h2>
-      <Persons persons={persons} /> 
+      <Persons persons={persons} deleteContact={deleteContact} /> 
 
     </div>
   )

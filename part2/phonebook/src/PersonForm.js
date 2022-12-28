@@ -1,8 +1,8 @@
 
-const PersonForm = ({concatContact, newName, handleName, newNumber, handleNumber}) => {
+const PersonForm = ({addContact, newName, handleName, newNumber, handleNumber}) => {
 
     return (
-      <form onSubmit={concatContact}>
+      <form onSubmit={addContact}>
         <div>
           name: <input
                 value={newName}
