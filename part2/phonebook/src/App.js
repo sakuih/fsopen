@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Filter from './Filter.js'
 import PersonForm from './PersonForm.js'
 import Persons from './Persons.js'
-import {getServerData, deleteData, postData, update} from './backendFunc.js'
+import {getData, deleteData, postData, updateData} from './backendFunc.js'
 
 const App = () => {
     // persons value below is for testing. If seen
@@ -17,22 +17,11 @@ const App = () => {
   const [nameOnList, setNameOnList] = useState(false)
   
   useEffect(() => {
-      getServerData(setPersons)
+      getData()
   }) 
     // Checks if persons got duplicate name
     // isNameOnList can be used as a function with a return value of true or false
 
-    /* Vanha ratkaisu
-        const isNameOnList = persons.every(m => {
-            if(m.name === newName){
-                return true
-            }
-            else {
-                return false
-            }
-        }) 
-     *
-     */
     function isNameOnList() {
         if (persons.some(e => e.name === newName)) {
            setNameOnList(true) 
@@ -90,7 +79,6 @@ const App = () => {
       handleName={handleName} newNumber={newNumber} handleNumber={handleNumber} />
       <h2>Numbers</h2>
       <Persons persons={persons} deleteContact={deleteContact} /> 
-
     </div>
   )
 }
