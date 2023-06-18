@@ -1,29 +1,5 @@
 {
   "persons": [
-    {
-      "name": "dsadsadasd2",
-      "number": "312321312",
-      "id": 1
-    },
-    {
-      "name": "dsadsadasdsd",
-      "number": "1213213221321",
-      "id": 2
-    },
-    {
-      "name": "dsadasdasdasdas",
-      "number": "21312321321",
-      "id": 3
-    },
-    {
-      "name": "sadsadsa",
-      "number": "213213",
-      "id": 4
-    },
-    {
-      "name": "dadsadd",
-      "number": "",
-      "id": 5
-    }
   ]
+
 }
