@@ -1,10 +1,10 @@
 import { useState } from 'react'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'not connected to db' , number: '3213213'},
-    { name: 'not connected to db' , number: '3213213'},
-    { name: 'not connected to db' , number: '3213213'}
+  const [ persons, setPersons] = useState([
+    {id: 0, name: 'not connected to db' , number: '3213213'},
+    {id: 1, name: 'not connected db' , number: '213'},
+    {id: 2, name: 'not db' , number: '3213213321321321'}
   ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
@@ -18,8 +18,11 @@ const App = () => {
         setNewNumber(e.target.value)
     }
       function deletePerson(e) {
-
-         console.log("This person will be deleted", e)
+         console.log("1This person will be deleted", e)
+         const updatedList = persons.filter((person) => person.id !== e) 
+         
+         setPersons(updatedList)
+         console.log("2This person will be deleted", e)
       }
           function createPerson(e) {
             console.log("Person created")
@@ -28,6 +31,7 @@ const App = () => {
               console.log(e.target[0].value)
               console.log(e.target[1].value)
               const newPerson = {
+                id: persons.length + 1,
                 name: newName,
                 number: newNumber,
               }
@@ -38,10 +42,8 @@ const App = () => {
           }
               function mapPersons(persons) {
 
-                  const mappedList = persons.map((person, index) =>
-                      <li key={index}>{person.name} {person.number} <button onClick={() => deletePerson(index)}>Delete</button></li>
-                  )
-                return mappedList
+                  return persons.map((person) =>
+                      <li key={person.id}>{person.name} {person.number} <button onClick={() => deletePerson(person.id)} >Delete</button></li>)
                     }
 
     return (
@@ -76,7 +78,6 @@ const App = () => {
             <ul>
                 {mapPersons(persons)}
             </ul>
-
         </div>
     )
   }
