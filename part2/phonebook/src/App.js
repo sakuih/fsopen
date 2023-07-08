@@ -4,7 +4,7 @@ const App = () => {
   const [ persons, setPersons] = useState([
     {id: 0, name: 'not connected to db' , number: '3213213'},
     {id: 1, name: 'not connected db' , number: '213'},
-    {id: 2, name: 'not db' , number: '3213213321321321'}
+    {id: 2, name: 'Arto Hellas' , number: '050505050'}
   ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
@@ -35,9 +35,19 @@ const App = () => {
                 name: newName,
                 number: newNumber,
               }
+              const duplicateCheck = persons.some((person) => person.name === newName)
+              console.log(newName)
+              if(duplicateCheck === false) {
                 setPersons(persons.concat(newPerson))
                 setNewName(newName)
                 setNewNumber(newNumber)
+              }
+              if(duplicateCheck === true) {
+                  alert(`${newName} is already in list`)
+                  setNewName('')
+                  setNewNumber('')
+              }
+             console.log(duplicateCheck) 
                 
           }
               function mapPersons(persons) {
