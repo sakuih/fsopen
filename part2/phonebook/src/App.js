@@ -1,5 +1,10 @@
 import { useState } from 'react'
 
+// Component imports
+import Filter from './Filter.js'
+import InputForm from './InputForm.js'
+import Numbers from './Numbers.js'
+
 const App = () => {
   const [ persons, setPersons] = useState([
     {id: 0, name: 'not connected to db' , number: '3213213'},
@@ -41,6 +46,7 @@ const App = () => {
              setPersons(updatedList)
              console.log("2This person will be deleted", e)
           }
+
               function createPerson(e) {
                 console.log("Person created")
                   e.preventDefault()
@@ -67,6 +73,7 @@ const App = () => {
                  console.log(duplicateCheck) 
                     
               }
+
                   function mapPersons(persons) {
                       if (showAll === false) {
                           const filteredList = persons.filter((person) => person.name.includes(newFilter))
@@ -80,45 +87,20 @@ const App = () => {
                           <li key={person.id}>{person.name} {person.number} <button onClick={() => deletePerson(person.id)} >Delete</button></li>)
                       }
                         }
-                  function filteredPersons(persons) {
-                  }
 
         return (
             <div>
               
               <h2>Phonebook</h2>
-                Filter <input
-                  onChange={handleFilterChange}
-
-                 />
-              <form onSubmit={createPerson}>
-                  <h2>Add a new contact</h2>
-                 <div>
-                      name: <input
-                      type="text"
-                      value={newName}
-                      onChange={handleNameChange}
-                      placeholder="Enter name"
-                  />
-                  </div>
-                    <br/>
-                  <div>
-                      number: <input
-                      type={"number"}
-                      value={newNumber}
-                      onChange={handleNumberChange}
-                      placeholder="Enter number"
-                  />
-                  </div>
-                <div>
-                  <button type="submit">add</button>
-                </div>
-              </form>
-              <h2>Numbers</h2>
-                <ul>
-                    
-                    {mapPersons(persons)}
-                </ul>
+                <Filter handleFilter={handleFilterChange} />
+                <InputForm 
+                  createPerson={createPerson}
+                  newName={newName}
+                  newNumber={newNumber}
+                  handleNameChange={handleNameChange}
+                  handleNumberChange={handleNumberChange}
+                />
+                <Numbers persons={persons} mapPersons={mapPersons} />
             </div>
         )
       }
