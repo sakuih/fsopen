@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { getData, postData, updateData, deleteData} from './serverFunc.js'
 
 // Component imports
 import Filter from './Filter.js'
 import InputForm from './InputForm.js'
 import Numbers from './Numbers.js'
+import Server from './serverFunc.js'
 
 const App = () => {
   const [ persons, setPersons] = useState([
@@ -16,6 +18,14 @@ const App = () => {
   // Used in filter
   const [showAll, setShowAll] = useState(true)
   const [newFilter, setNewFilter] = useState('')
+
+useEffect( () => {
+  serverFunc.getData().then(response => {
+      setPersons(response)
+  })
+}, [] )
+
+
 
   function handleNameChange(e) {
       console.log("handleNameChange")
