@@ -5,7 +5,6 @@ import { getData, postData, updateData, deleteData} from './serverFunc.js'
 import Filter from './Filter.js'
 import InputForm from './InputForm.js'
 import Numbers from './Numbers.js'
-import Server from './serverFunc.js'
 
 const App = () => {
   const [ persons, setPersons] = useState([
@@ -20,11 +19,11 @@ const App = () => {
   const [newFilter, setNewFilter] = useState('')
 
 useEffect( () => {
-  serverFunc.getData().then(response => {
-      setPersons(response)
-  })
+        getData().then(response => {
+          setPersons(response)
+          console.log("useEffect")
+        })
 }, [] )
-
 
 
   function handleNameChange(e) {
@@ -47,14 +46,15 @@ useEffect( () => {
             }
             console.log("handleFilterChange")
             setNewFilter(e.target.value)
-            
         }
+
           function deletePerson(e) {
-             console.log("1This person will be deleted", e)
-             const updatedList = persons.filter((person) => person.id !== e) 
-             
-             setPersons(updatedList)
-             console.log("2This person will be deleted", e)
+             console.log("1person will be deleted", e.id)
+              if (window.confirm(`DELETE ${e.name}?`)){
+                deleteData(e.id)
+                 const updatedList = persons.filter((person) => person.id !== e.id) 
+                 setPersons(updatedList)
+              }
           }
 
               function createPerson(e) {
@@ -71,12 +71,16 @@ useEffect( () => {
                   const duplicateCheck = persons.some((person) => person.name === newName)
                   console.log(newName)
                   if(duplicateCheck === false) {
+                    postData(newPerson)
+                    //window.location.reload()
                     setPersons(persons.concat(newPerson))
-                    setNewName(newName)
-                    setNewNumber(newNumber)
+                    setNewName('')
+                    setNewNumber('')
                   }
                   if(duplicateCheck === true) {
-                      alert(`${newName} is already in list`)
+                      if(window.confirm(`${newName} is already in list. Do you want to replace existing old number with a new one?`)){
+                          updateData()
+                      }
                       setNewName('')
                       setNewNumber('')
                   }
@@ -86,15 +90,37 @@ useEffect( () => {
 
                   function mapPersons(persons) {
                       if (showAll === false) {
-                          const filteredList = persons.filter((person) => person.name.includes(newFilter))
+                          /*
+                          setLowerCaseNewFilter(newFilter.toLowerCase())
+                          setLowerCasePersons(persons)
+                          lowerCasePersons.map( (person) => person.name.toLowerCase()) 
+                          lowerCasePersons.filter((person) => person.name.includes(lowerCaseNewFilter))
+                          */
+                          let filteredList = []
+
+                          filteredList = persons.filter(person => person.name.toLowerCase().includes(newFilter.toLowerCase()))
+
+
+                          /*
+
+                          lowerCasePersons.filter((person)=> person.name.includes(lowerCaseNewFilter))
+                          setFilteredList(persons)
+                          filteredList.filter((person) => lowerCasePersons.includes(person.id))
                           console.log("filteredList", filteredList)
-                          console.log("newFilter", newFilter) 
+                          console.log("newFilter", newFilter)
+                          */
                           return filteredList.map((person) =>
-                              <li key={person.id}>{person.name} {person.number} <button onClick={() => deletePerson(person.id)} >Delete</button></li>)
+                              <li key={person.id}>{person.name} {person.number} 
+                              <button onClick={() => deletePerson(person)} >
+                              Delete
+                              </button></li>)
                       }
                       else {
                       return persons.map((person) =>
-                          <li key={person.id}>{person.name} {person.number} <button onClick={() => deletePerson(person.id)} >Delete</button></li>)
+                          <li key={person.id}>{person.name} {person.number} 
+                          <button onClick={() => deletePerson(person)} >
+                          Delete
+                          </button></li>)
                       }
                         }
 
