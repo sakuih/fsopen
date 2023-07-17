@@ -78,9 +78,7 @@ useEffect( () => {
                     setNewNumber('')
                   }
                   if(duplicateCheck === true) {
-                      if(window.confirm(`${newName} is already in list. Do you want to replace existing old number with a new one?`)){
-                          updateData()
-                      }
+                      alert(`${newName} is already on the list`)
                       setNewName('')
                       setNewNumber('')
                   }
