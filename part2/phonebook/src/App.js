@@ -5,6 +5,7 @@ import { getData, postData, updateData, deleteData} from './serverFunc.js'
 import Filter from './Filter.js'
 import InputForm from './InputForm.js'
 import Numbers from './Numbers.js'
+import Notification from './Notification.js'
 
 const App = () => {
   const [ persons, setPersons] = useState([
@@ -17,6 +18,9 @@ const App = () => {
   // Used in filter
   const [showAll, setShowAll] = useState(true)
   const [newFilter, setNewFilter] = useState('')
+  // Success message
+  const [successMsg, setSuccessMsg] = useState(null)
+
 
 useEffect( () => {
         getData().then(response => {
@@ -74,8 +78,13 @@ useEffect( () => {
                     postData(newPerson)
                     //window.location.reload()
                     setPersons(persons.concat(newPerson))
+                    setSuccessMsg(`Added ${newName}`)
+                      setTimeout(() => {
+                          setSuccessMsg(null)
+                      }, 5000)
                     setNewName('')
                     setNewNumber('')
+                    //funktiokutsu
                   }
                   if(duplicateCheck === true) {
                       alert(`${newName} is already on the list`)
@@ -126,6 +135,7 @@ useEffect( () => {
             <div>
               
               <h2>Phonebook</h2>
+                <Notification message={successMsg}  />
                 <Filter handleFilter={handleFilterChange} />
                 <InputForm 
                   createPerson={createPerson}
