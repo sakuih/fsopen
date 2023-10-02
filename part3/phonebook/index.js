@@ -1,4 +1,5 @@
 const express = require('express')
+const morgan = require('morgan')
 const date = new Date()
 const app = express()
 const port = 3001
@@ -26,8 +27,15 @@ let data = [
     }
 ]
 
+app.use(morgan('tiny'))
 app.use(express.json())
 //app.set('json spaces', 2)
+
+/*
+morgan.token('host', function(req,res) {
+  return req.hostname
+})
+*/
 
 app.get("/api/persons/", (req, res) => {
   res.header("Content-type","application/json")
@@ -47,7 +55,7 @@ app.get("/api/persons/:id", (req, res) => {
 })
 
 app.delete("/api/persons/:id", (req, res) => {
-  console.log("req params: ", req.params.id)
+  //console.log("req params: ", req.params.id)
   const itemid = data.findIndex((id) => id === req.params.id)
     if (itemid !== 0){
         //data.filter((id) => data.id !== itemid )
@@ -62,7 +70,7 @@ app.delete("/api/persons/:id", (req, res) => {
 
 app.post("/api/persons/", (req, res) => {
 
-    console.log("data 1", data[0].name)
+    //console.log("data 1", data[0].name)
   if (!req.body.name || !req.body.number) {
     return res.status(400).json({
       error: 'name or number is missing'
@@ -79,19 +87,19 @@ app.post("/api/persons/", (req, res) => {
 
   //const checkInclude = data.includes(req.body.name)
   for (let i = 0; i < data.length; i++){
-      console.log("data name ", data[i].name)
+      //console.log("data name ", data[i].name)
     if (data[i].name === req.body.name){
     return res.status(400).json({
         error: 'name must be unique'
     })
     }
   }
-  console.log("req.body.name", req.body.name)
+  //console.log("req.body.name", req.body.name)
 
   data = data.concat(newPerson)
 
   res.json(newPerson)
-  console.log("person created")
+  //console.log("person created")
 
 })
 
