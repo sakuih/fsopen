@@ -1,8 +1,10 @@
 const express = require('express')
 const morgan = require('morgan')
+require('dotenv').config()
 const date = new Date()
 const app = express()
-const port = 3001
+const PORT = process.env.PORT || 3001
+const cors = require('cors')
 
 let data = [
     { 
@@ -29,13 +31,10 @@ let data = [
 
 app.use(morgan('tiny'))
 app.use(express.json())
-//app.set('json spaces', 2)
+app.use(cors())
+app.use(express.static('build'))
 
-/*
-morgan.token('host', function(req,res) {
-  return req.hostname
-})
-*/
+//app.set('json spaces', 2)
 
 app.get("/api/persons/", (req, res) => {
   res.header("Content-type","application/json")
@@ -103,8 +102,8 @@ app.post("/api/persons/", (req, res) => {
 
 })
 
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`)
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`)
 })
 
 
