@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+require('dotenv').config()
 
 if (process.argv.length<3) {
   console.log('give password as argument')
@@ -9,7 +10,7 @@ const pass = process.argv[2]
 
 //const url = `mongodb+srv://safari:${pass}@fsopen.khinnaw.
 //    mongodb.net/?retryWrites=true&w=majority`
-const url = `mongodb+srv://safari:${pass}@fsopen.khinnaw.mongodb.net/fsopen?retryWrites=true&w=majority`
+const url = process.env.MONGO_URI
 
 mongoose.set('strictQuery', false)
 

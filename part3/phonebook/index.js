@@ -5,6 +5,13 @@ const date = new Date()
 const app = express()
 const PORT = process.env.PORT || 3001
 const cors = require('cors')
+const persons = require('./models/person')
+
+/*
+ * Cleaner production version:
+ * https://github.com/sakuih/phonebook
+ *
+ */
 
 let data = [
     { 
@@ -37,8 +44,12 @@ app.use(express.static('build'))
 //app.set('json spaces', 2)
 
 app.get("/api/persons/", (req, res) => {
-  res.header("Content-type","application/json")
-  res.send(JSON.stringify(data, null, 4))
+  //res.header("Content-type","application/json")
+  persons.find({})
+    .then(result => {
+      res.send(JSON.stringify(result, null, 4))
+    })
+  //res.send(JSON.stringify(data, null, 4))
 })
 
 app.get("/info/", (req, res) => {
@@ -50,7 +61,7 @@ app.get("/api/persons/:id", (req, res) => {
   const id = req.params.id
   res.header("Content-type","application/json")
   res.send(JSON.stringify(data[id], null, 4))
-  
+
 })
 
 app.delete("/api/persons/:id", (req, res) => {
@@ -69,22 +80,47 @@ app.delete("/api/persons/:id", (req, res) => {
 
 app.post("/api/persons/", (req, res) => {
 
+  const Person = new persons({
+      name: req.body.name,
+      number: req.body.number
+  })
+
+  Person.save().then(() => {
+      console.log(`added ${Person.name} ${Person.number} to phonebook`) 
+      res.send(JSON.stringify(Person, null, 4))
+  })
+
+
+})
+
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`)
+})
+
+
+// OLDER TEST CODE
+
+
+function olderAppPost(req,res) {
+  
     //console.log("data 1", data[0].name)
+  
   if (!req.body.name || !req.body.number) {
     return res.status(400).json({
       error: 'name or number is missing'
     })
   }
-
+  
   let randomNum = Math.floor((Math.random() * 1000) + 1)
   const newPerson = {
     id: randomNum,
     name: req.body.name,
     number: req.body.number
   }
-
+  
 
   //const checkInclude = data.includes(req.body.name)
+  
   for (let i = 0; i < data.length; i++){
       //console.log("data name ", data[i].name)
     if (data[i].name === req.body.name){
@@ -93,18 +129,12 @@ app.post("/api/persons/", (req, res) => {
     })
     }
   }
-  //console.log("req.body.name", req.body.name)
 
   data = data.concat(newPerson)
-
   res.json(newPerson)
+  
+  //console.log("req.body.name", req.body.name)
   //console.log("person created")
-
-})
-
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`)
-})
-
+}
 
 
