@@ -1,6 +1,7 @@
 import Filter from './Filter.js'
 import InputForm from './InputForm.js'
 import Numbers from './Numbers.js'
+import Notification from './Notification.js'
 
 import { useState, useEffect } from 'react'
 import { getData, postData, updateData, deleteData} from './serverFunc.js'
@@ -69,13 +70,17 @@ useEffect( () => {
                   console.log(e.target[0].value)
                   console.log(e.target[1].value)
                   const newPerson = {
-                    id: persons.length + 1,
+                    id:  Math.floor((Math.random() * 1000) + 1),
                     name: newName,
                     number: newNumber,
                   }
                   const duplicateCheck = persons.some((person) => person.name === newName)
                   console.log(newName)
-                  if(duplicateCheck === false) {
+                  if (newNumber === '')
+                      alert("Please add a number")
+                  if (newName === '')
+                      alert("Please add a name")
+                  if(duplicateCheck === false && newNumber !== '' && newName !== '') {
                     postData(newPerson)
                     //window.location.reload()
                     setPersons(persons.concat(newPerson))

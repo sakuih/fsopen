@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 
 const personSchema = new mongoose.Schema({
+  id: Number,
   name: String,
   number: String
 })

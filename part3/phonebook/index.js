@@ -65,22 +65,31 @@ app.get("/api/persons/:id", (req, res) => {
 })
 
 app.delete("/api/persons/:id", (req, res) => {
-  //console.log("req params: ", req.params.id)
-  const itemid = data.findIndex((id) => id === req.params.id)
-    if (itemid !== 0){
-        //data.filter((id) => data.id !== itemid )
-        data.splice(itemid, 1)
-        res.send("Delete req successful")
-    }
-    else {
-        res.send("delete not succesful")
-    }
+  console.log("req params: ", req.params)
+    
+   persons.deleteOne({id: req.params.id})
+    .then(result => {
+      res.status(204).end()
+    })
+    .catch (error => console.log(error))
+    
   
 })
 
 app.post("/api/persons/", (req, res) => {
 
+  console.log(`req.body.name ${req.body.name}`)
+  console.log(`req.body.id ${req.body.id}`)
+  console.log(`req.body.number ${req.body.number}`)
+
+  if (!req.body.name || !req.body.number) {
+    return res.status(400).json({
+      error: 'name or number is missing'
+    })
+  }
+
   const Person = new persons({
+      id: req.body.id,
       name: req.body.name,
       number: req.body.number
   })
@@ -90,7 +99,6 @@ app.post("/api/persons/", (req, res) => {
       res.send(JSON.stringify(Person, null, 4))
   })
 
-
 })
 
 app.listen(PORT, () => {
@@ -98,7 +106,7 @@ app.listen(PORT, () => {
 })
 
 
-// OLDER TEST CODE
+// OLD CODE
 
 
 function olderAppPost(req,res) {
@@ -135,6 +143,19 @@ function olderAppPost(req,res) {
   
   //console.log("req.body.name", req.body.name)
   //console.log("person created")
+}
+
+function oldDelete(req,res) {
+
+  const itemid = data.findIndex((id) => id === req.params.id)
+    if (itemid !== 0){
+        //data.filter((id) => data.id !== itemid )
+        data.splice(itemid, 1)
+        res.send("Delete req successful")
+    }
+    else {
+        res.send("delete not succesful")
+    }
 }
 
 

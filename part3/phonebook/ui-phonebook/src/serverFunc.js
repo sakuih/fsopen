@@ -7,6 +7,7 @@ export function getData() {
 }
 export function postData (newPerson) {
     axios.post(serverUrl, {
+        id: newPerson.id,
         name: newPerson.name,
         number: newPerson.number
     })
